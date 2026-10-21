@@ -7,12 +7,17 @@
 .phpunit.result.cache
 /.codex
 /.cursor/
+/.claude/
+/.kiro/
 /.idea
 /.nova
 /.phpunit.cache
 /.vscode
 /.zed
 /auth.json
+/boost.json
+/.mcp.json
+/package-lock.json
 /node_modules
 /public/build
 /public/fonts-manifest.dev.json
