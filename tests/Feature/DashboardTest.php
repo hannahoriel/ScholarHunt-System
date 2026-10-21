@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Support\MockExamData;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -53,9 +54,50 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertSee('href="'.route('dashboard.reviewer').'"', false);
 
-        $this->get(route('dashboard.reviewer'))
+        $reviewerResponse = $this->get(route('dashboard.reviewer'));
+
+        $reviewerResponse
             ->assertOk()
-            ->assertSee('Prepare with purpose.');
+            ->assertSee('Prepare with purpose.')
+            ->assertSee('id="mock-exam-data"', false)
+            ->assertSee('max="70"', false)
+            ->assertSee('Multiple choice');
+
+        foreach (MockExamData::subjects() as $subject => $exam) {
+            $reviewerResponse
+                ->assertSee($exam['title'])
+                ->assertSee(route('dashboard.reviewer.download', ['subject' => $subject]), false);
+
+            $this->assertFileExists(storage_path('app/mock-exams/'.$exam['pdf']));
+        }
+    }
+
+    public function test_verified_user_can_download_a_mock_exam_from_private_storage(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        foreach (MockExamData::subjects() as $subject => $exam) {
+            $this->get(route('dashboard.reviewer.download', ['subject' => $subject]))
+                ->assertDownload($exam['pdf'])
+                ->assertHeader('Content-Type', 'application/pdf');
+        }
+    }
+
+    public function test_guest_cannot_download_a_mock_exam(): void
+    {
+        $this->get(route('dashboard.reviewer.download', ['subject' => 'math']))
+            ->assertRedirectToRoute('login');
+    }
+
+    public function test_unknown_mock_exam_subject_returns_not_found(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard.reviewer.download', ['subject' => '..']))
+            ->assertNotFound();
     }
 
     public function test_verified_login_redirects_to_dashboard_home(): void

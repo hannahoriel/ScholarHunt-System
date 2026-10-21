@@ -11,7 +11,7 @@
             <span class="reviewer-eyebrow"><i></i> SCHOLARHUNT STUDY CENTER</span>
             <h1>Prepare with purpose.<br><em>Practice with confidence.</em></h1>
             <p>Review core subjects, choose a provided reviewer or mock exam, or upload your own PDF and turn it into a practice quiz.</p>
-            <div class="reviewer-hero-stats"><span><b>9</b> subject areas</span><span><b>3</b> quiz formats</span><span><b>PDF</b> upload support</span></div>
+            <div class="reviewer-hero-stats"><span><b>9</b> subject areas</span><span><b>1</b> quiz format</span><span><b>PDF</b> upload support</span></div>
         </div>
         <div class="reviewer-hero-art" aria-hidden="true"><div class="reviewer-orbit"></div><div class="reviewer-book"><b>✓</b><i></i><i></i><i></i><i></i></div><span class="float-note">✦ Study smarter</span></div>
     </header>
@@ -37,12 +37,23 @@
         <div class="material-panel" data-panel="provided">
             <div class="panel-heading"><div><h3>Reviewer library</h3><p>Select a topic or mock exam as your quiz source.</p></div><span>STARTER LIBRARY</span></div>
             <div class="provided-grid">
-                <label class="provided-card chosen"><input type="radio" name="material" value="general" checked><span class="material-symbol">✦</span><b>General Scholarship Exam Reviewer</b><small>Mixed subjects · Foundation practice</small><em>Use this reviewer →</em></label>
-                <label class="provided-card"><input type="radio" name="material" value="math"><span class="material-symbol orange">÷</span><b>Basic Mathematics Reviewer</b><small>Fractions, decimals, percent, ratios</small><em>Use this reviewer →</em></label>
-                <label class="provided-card"><input type="radio" name="material" value="english"><span class="material-symbol blue">Aa</span><b>English & Grammar Reviewer</b><small>Sentence structure, usage, vocabulary</small><em>Use this reviewer →</em></label>
-                <label class="provided-card"><input type="radio" name="material" value="mock"><span class="material-symbol purple">✓</span><b>Scholarship Mock Exam</b><small>Mixed questions · Exam-style practice</small><em>Use mock exam →</em></label>
+                <div class="provided-library-item">
+                    <label class="provided-card chosen"><input type="radio" name="material" value="all" checked><span class="material-symbol">✦</span><b>All subjects</b><small>Mixed practice · 70 questions per subject</small><em>Use mixed practice set →</em></label>
+                </div>
+                @foreach ($mockExams as $key => $exam)
+                    <div class="provided-library-item">
+                        <label class="provided-card">
+                            <input type="radio" name="material" value="{{ $key }}">
+                            <span class="material-symbol">{{ ['logic' => '◈', 'english' => 'Aa', 'science' => '⚛', 'math' => '÷', 'history' => '⌂', 'filipino' => '文', 'civics' => '⚖', 'reading' => '¶'][$key] ?? '✦' }}</span>
+                            <b>{{ $exam['title'] }}</b>
+                            <small>{{ $exam['description'] }} · 70 questions</small>
+                            <em>Use this mock exam →</em>
+                        </label>
+                        <a class="mock-exam-download" href="{{ route('dashboard.reviewer.download', ['subject' => $key]) }}">Download PDF</a>
+                    </div>
+                @endforeach
             </div>
-            <p class="material-note">ⓘ These are starter practice materials for the page prototype. The question bank can be expanded with verified study content.</p>
+            <p class="material-note">ⓘ These original practice questions are for review and are not official scholarship examination materials.</p>
         </div>
         <div class="material-panel hidden" data-panel="upload">
             <div class="upload-zone" id="uploadZone"><input type="file" id="reviewerPdf" accept=".pdf,application/pdf" hidden><div class="upload-icon">↑</div><h3>Drop your reviewer PDF here</h3><p>or browse your device to choose a file</p><button type="button" class="outline-btn" id="browsePdf">Choose PDF file</button><small>PDF only · Max 15 MB · Text-based PDFs work best</small></div>
@@ -55,10 +66,8 @@
             <div class="settings-grid">
                 <fieldset><legend>Question type</legend><div class="quiz-types">
                     <label class="type-option selected"><input type="radio" name="quizType" value="multiple" checked><span>☷</span><b>Multiple choice<small>Choose the best answer</small></b></label>
-                    <label class="type-option"><input type="radio" name="quizType" value="truefalse"><span>✓</span><b>True or false<small>Judge a statement</small></b></label>
-                    <label class="type-option"><input type="radio" name="quizType" value="identification"><span>✎</span><b>Identification<small>Type your answer</small></b></label>
                 </div></fieldset>
-                <div class="setting-count"><label for="questionCount">Number of questions</label><div class="count-control"><button type="button" id="countMinus">−</button><output id="countOutput">10</output><button type="button" id="countPlus">+</button></div><input id="questionCount" type="range" min="5" max="20" step="5" value="10"><div class="range-labels"><span>5 questions</span><span>20 questions</span></div>
+                <div class="setting-count"><label for="questionCount">Number of questions</label><div class="count-control"><button type="button" id="countMinus">−</button><output id="countOutput">10</output><button type="button" id="countPlus">+</button></div><input id="questionCount" type="range" min="5" max="70" step="1" value="10"><div class="range-labels"><span>5 questions</span><span>70 questions</span></div>
                     <label for="quizSubject" class="subject-label">Quiz subject</label><select id="quizSubject"><option value="all">All subjects / Mixed</option><option value="logic">Abstract & Logic</option><option value="english">English</option><option value="science">Science</option><option value="math">Mathematics</option><option value="history">History</option><option value="filipino">Filipino</option><option value="civics">General Knowledge & Philippine Constitution</option><option value="reading">Reading Comprehension</option></select>
                 </div>
             </div>
@@ -77,5 +86,6 @@
 </div>
 @endsection
 @push('scripts')
+    <script type="application/json" id="mock-exam-data">@json($mockQuestions)</script>
     @vite('resources/js/reviewer.js')
 @endpush

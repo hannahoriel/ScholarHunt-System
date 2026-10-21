@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\ReviewerController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Public ───────────────────────────────────────────────────────────────────
@@ -48,5 +49,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'pages.dashboard.dashboard-home')->name('dashboard');
     Route::get('/feed', [FeedController::class, 'index'])->name('dashboard.discover');
-    Route::view('/dashboard/reviewer', 'pages.reviewer')->name('dashboard.reviewer');
+    Route::get('/dashboard/reviewer', [ReviewerController::class, 'index'])->name('dashboard.reviewer');
+    Route::get('/dashboard/reviewer/{subject}/download', [ReviewerController::class, 'download'])
+        ->name('dashboard.reviewer.download');
 });
