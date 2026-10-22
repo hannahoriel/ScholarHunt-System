@@ -1,6 +1,10 @@
 (() => {
 
+<<<<<<< HEAD
     const { scholarships: DATA, types: TYPES, trackedScholarshipIds = [], trackerStoreUrl = '/dashboard/tracker', trackerUrl = '/dashboard/tracker' } = JSON.parse(document.getElementById('feed-data').textContent);
+=======
+    const { scholarships: DATA, types: TYPES } = JSON.parse(document.getElementById('feed-data').textContent);
+>>>>>>> origin/master
 
     const LEVELS = { shs: 'Senior High', college: 'College' };
 
@@ -39,9 +43,23 @@
 
 
 
+<<<<<<< HEAD
     /* ---- Saved applications (persisted in the authenticated user's database) ---- */
     let saved = trackedScholarshipIds.map(String);
     const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+=======
+    /* ---- Saved (localStorage; papalitan ng database kapag may backend na) ---- */
+
+    const KEY = 'scholarhunt-saved';
+
+    const loadSaved = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (_) { return []; } };
+
+    const storeSaved = list => { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (_) {} };
+
+    let saved = loadSaved();
+
+
+>>>>>>> origin/master
 
     /* ---- Filter + render ---- */
 
@@ -228,6 +246,7 @@
             else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
     });
+<<<<<<< HEAD
     $('d-save').addEventListener('click', async () => {
         if (!current) return;
         if (saved.includes(String(current.id))) {
@@ -273,6 +292,15 @@
         } finally {
             button.disabled = false;
         }
+=======
+    $('d-save').addEventListener('click', () => {
+        if (!current) return;
+        const was = saved.includes(current.id);
+        saved = was ? saved.filter(x => x !== current.id) : [...saved, current.id];
+        storeSaved(saved);
+        syncSave();
+        say(was ? 'Removed from your tracker' : 'Saved to your tracker');
+>>>>>>> origin/master
     });
 
     $('q').value = state.q;
