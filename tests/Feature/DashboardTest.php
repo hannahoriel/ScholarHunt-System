@@ -25,6 +25,30 @@ class DashboardTest extends TestCase
             ->assertSee(route('dashboard.discover'), false);
     }
 
+    public function test_dashboard_sidebar_displays_a_csrf_protected_logout_button(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('method="POST"', false)
+            ->assertSee('action="'.route('logout').'"', false)
+            ->assertSee('name="_token"', false)
+            ->assertSee('Log out');
+    }
+
+    public function test_logout_redirects_to_landing_page_and_ends_the_authenticated_session(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('logout'))
+            ->assertRedirectToRoute('landing');
+
+        $this->assertGuest();
+    }
+
     public function test_discover_route_displays_scholarship_feed_and_type_filters(): void
     {
         $user = User::factory()->create();

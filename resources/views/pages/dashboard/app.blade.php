@@ -36,10 +36,13 @@
         .nav a{display:flex;align-items:center;gap:13px;padding:11px 12px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;color:#A9C2D4;transition:background .2s,color .2s}
         .nav a:hover{background:#ffffff0F;color:#fff}
         .nav a[aria-current="page"]{background:var(--teal);color:#fff;font-weight:700}
-        .side-user{margin-top:auto;display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #7BA0C026;border-radius:var(--radius);background:#ffffff08}
+        .sidebar-footer{margin-top:auto;display:grid;gap:8px}
+        .side-user{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #7BA0C026;border-radius:var(--radius);background:#ffffff08}
         .avatar{width:36px;height:36px;border-radius:50%;background:var(--mist);color:var(--navy);display:grid;place-items:center;font:800 13px 'Manrope',sans-serif;flex:none}
         .side-user strong{display:block;font-size:13px;color:#E8F1F6;line-height:1.3}
         .side-user small{font-size:11.5px;color:#7BA0C0}
+        .sidebar-logout button{display:flex;align-items:center;gap:13px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;color:#A9C2D4;text-align:left;font-size:14px;font-weight:500;transition:background .2s,color .2s}
+        .sidebar-logout button:hover{background:#ffffff0F;color:#fff}
 
         .main{min-width:0;padding:44px clamp(20px,4.5vw,64px) 60px}
         .page-head h1{font-size:clamp(28px,3.4vw,40px);font-weight:800;letter-spacing:-.07em;line-height:1.12}
