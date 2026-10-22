@@ -26,8 +26,17 @@
             </a>
         @endforeach
     </nav>
-    <div class="side-user">
-        <span class="avatar">{{ $initials ?: 'SH' }}</span>
-        <div><strong>{{ $displayName }}</strong><small>Student</small></div>
+    <div class="sidebar-footer">
+        <div class="side-user">
+            <span class="avatar">{{ $initials ?: 'SH' }}</span>
+            <div><strong>{{ $displayName }}</strong><small>Student</small></div>
+        </div>
+        <form class="sidebar-logout" method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
+                Log out
+            </button>
+        </form>
     </div>
 </aside>
