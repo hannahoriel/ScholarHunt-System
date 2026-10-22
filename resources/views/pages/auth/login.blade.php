@@ -124,6 +124,11 @@
                     </div>
                     <button class="submit-btn" type="submit"><span>Log in to ScholarHunt</span><span class="arrow" aria-hidden="true">↗</span></button>
                 </form>
+                <div class="form-notice" role="note" style="margin-top:22px">
+                    <strong>Demo account</strong><br>
+                    Email: demo@scholarhunt.test<br>
+                    Password: demo1234
+                </div>
                 <p class="bottom-hint">Don't have an account yet? <a href="{{ url('/register') }}">Sign up</a></p>
             </section>
             <div class="bottom-meta"><span>© {{ date('Y') }} ScholarHunt</span><a href="{{ route('landing') }}">← Return to homepage</a></div>

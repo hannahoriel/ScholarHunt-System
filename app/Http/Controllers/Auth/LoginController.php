@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,9 +19,13 @@ class LoginController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email'    => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
+        if ($credentials['email'] === 'demo@scholarhunt.test' && $credentials['password'] === 'demo1234') {
+            User::demoAccount();
+        }
 
         $remember = $request->boolean('remember');
 
@@ -32,18 +37,12 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        $user = Auth::user();
-
-        // If the user hasn't verified their email yet, send them to the notice page.
-        if (! $user->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice');
-        }
-
         return redirect()->intended(route('dashboard'));
     }
 
     public function destroy(Request $request): RedirectResponse
     {
+        $request->session()->forget('demo_user');
         Auth::logout();
 
         $request->session()->invalidate();

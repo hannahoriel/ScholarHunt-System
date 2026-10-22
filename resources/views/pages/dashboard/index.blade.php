@@ -82,7 +82,7 @@
         </a>
         <div class="nav-right">
             <span class="nav-user">
-                Hello, <strong>{{ auth()->user()->first_name }}</strong>
+                Hello, <strong>{{ $user->first_name }}</strong>
             </span>
             <form method="POST" action="{{ route('logout') }}" style="display:inline">
                 @csrf
@@ -92,11 +92,8 @@
     </nav>
 
     <section class="hero">
-        @if (session('status') === 'verified')
-            <span class="hero-badge">Email verified successfully</span>
-        @endif
-        <h1>Welcome back, <span>{{ auth()->user()->first_name }}</span>.</h1>
-        <p>Your ScholarHunt account is active and your email has been verified. Scholarship discovery features are coming soon.</p>
+        <h1>Welcome back, <span>{{ $user->first_name }}</span>.</h1>
+        <p>Your ScholarHunt account is active. Scholarship discovery features are coming soon.</p>
     </section>
 
     <section class="stats" aria-label="Quick stats">
@@ -119,27 +116,27 @@
         <div class="profile-card" aria-label="Profile summary">
             <div class="profile-field">
                 <div class="field-label">Full name</div>
-                <div class="field-value">{{ auth()->user()->full_name }}</div>
+                <div class="field-value">{{ $user->full_name }}</div>
             </div>
             <div class="profile-field">
                 <div class="field-label">Email</div>
-                <div class="field-value">{{ auth()->user()->email }}</div>
+                <div class="field-value">{{ $user->email }}</div>
             </div>
             <div class="profile-field">
                 <div class="field-label">Contact</div>
-                <div class="field-value">{{ auth()->user()->contact_number }}</div>
+                <div class="field-value">{{ $user->contact_number }}</div>
             </div>
             <div class="profile-field">
                 <div class="field-label">Education level</div>
-                <div class="field-value">{{ auth()->user()->education_level === 'shs' ? 'Senior High School' : 'College' }}</div>
+                <div class="field-value">{{ $user->education_level === 'shs' ? 'Senior High School' : 'College' }}</div>
             </div>
             <div class="profile-field">
                 <div class="field-label">School</div>
-                <div class="field-value">{{ auth()->user()->school_name }}</div>
+                <div class="field-value">{{ $user->school_name }}</div>
             </div>
             <div class="profile-field">
                 <div class="field-label">Location</div>
-                <div class="field-value">{{ auth()->user()->address_city }}, {{ auth()->user()->address_province }}</div>
+                <div class="field-value">{{ $user->address_city }}, {{ $user->address_province }}</div>
             </div>
         </div>
 
