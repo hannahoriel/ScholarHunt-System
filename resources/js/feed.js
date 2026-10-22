@@ -1,6 +1,10 @@
 (() => {
 
+<<<<<<< HEAD
+    const { scholarships: DATA, types: TYPES, trackedScholarshipIds = [], trackerStoreUrl = '/dashboard/tracker', trackerUrl = '/dashboard/tracker' } = JSON.parse(document.getElementById('feed-data').textContent);
+=======
     const { scholarships: DATA, types: TYPES } = JSON.parse(document.getElementById('feed-data').textContent);
+>>>>>>> origin/master
 
     const LEVELS = { shs: 'Senior High', college: 'College' };
 
@@ -39,6 +43,11 @@
 
 
 
+<<<<<<< HEAD
+    /* ---- Saved applications (persisted in the authenticated user's database) ---- */
+    let saved = trackedScholarshipIds.map(String);
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+=======
     /* ---- Saved (localStorage; papalitan ng database kapag may backend na) ---- */
 
     const KEY = 'scholarhunt-saved';
@@ -50,6 +59,7 @@
     let saved = loadSaved();
 
 
+>>>>>>> origin/master
 
     /* ---- Filter + render ---- */
 
@@ -236,6 +246,53 @@
             else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
     });
+<<<<<<< HEAD
+    $('d-save').addEventListener('click', async () => {
+        if (!current) return;
+        if (saved.includes(String(current.id))) {
+            window.location.href = trackerUrl;
+            return;
+        }
+        const button = $('d-save');
+        const oldText = button.textContent;
+        button.disabled = true;
+        button.textContent = 'Saving…';
+        try {
+            const response = await fetch(trackerStoreUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    scholarship_id: String(current.id),
+                    scholarship_title: current.title,
+                    provider: current.provider || '',
+                    scholarship_type: current.type || '',
+                    applied_at: new Date().toISOString().slice(0, 10)
+                })
+            });
+            const result = await response.json().catch(() => ({}));
+            if (response.ok) {
+                saved.push(String(current.id));
+                syncSave();
+                say('Added to your tracker');
+            } else if (response.status === 409) {
+                saved.push(String(current.id));
+                syncSave();
+                say(result.message || 'Already in your tracker');
+            } else {
+                throw new Error(result.message || 'Could not save this scholarship. Please try again.');
+            }
+        } catch (error) {
+            button.textContent = oldText;
+            say(error.message || 'Could not save this scholarship. Please try again.');
+        } finally {
+            button.disabled = false;
+        }
+=======
     $('d-save').addEventListener('click', () => {
         if (!current) return;
         const was = saved.includes(current.id);
@@ -243,6 +300,7 @@
         storeSaved(saved);
         syncSave();
         say(was ? 'Removed from your tracker' : 'Saved to your tracker');
+>>>>>>> origin/master
     });
 
     $('q').value = state.q;

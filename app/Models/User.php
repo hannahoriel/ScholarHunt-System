@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -44,9 +43,35 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'birthday'          => 'date',
+            'password' => 'hashed',
+            'birthday' => 'date',
         ];
+    }
+
+    public static function demoAccount(): self
+    {
+        return self::firstOrCreate(
+            ['email' => 'demo@scholarhunt.test'],
+            [
+                'first_name' => 'Demo',
+                'surname' => 'Scholar',
+                'birthday' => '2005-01-01',
+                'age' => 21,
+                'sex' => 'male',
+                'contact_number' => '09171234567',
+                'education_level' => 'college',
+                'college_year' => '1',
+                'college_course' => 'Undeclared',
+                'school_name' => 'ScholarHunt Demo University',
+                'school_address' => 'Manila, Metro Manila',
+                'address_street' => 'Demo Street',
+                'address_barangay' => 'Demo Barangay',
+                'address_city' => 'Manila',
+                'address_province' => 'Metro Manila',
+                'address_zip' => '1000',
+                'password' => 'demo1234',
+            ]
+        );
     }
 
     /** Full display name built from stored parts. */

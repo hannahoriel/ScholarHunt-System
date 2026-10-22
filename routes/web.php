@@ -1,38 +1,44 @@
 <?php
 
-use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FeedController;
+<<<<<<< HEAD
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewerController;
+use App\Http\Controllers\TrackerController;
+=======
+use App\Http\Controllers\ReviewerController;
+>>>>>>> origin/master
 use Illuminate\Support\Facades\Route;
-
-// ─── Public ───────────────────────────────────────────────────────────────────
 
 Route::view('/', 'pages.landing-page')->name('landing');
 
-// ─── Guest-only (redirect to dashboard if already authenticated) ───────────────
-
 Route::middleware('guest')->group(function () {
-    // Registration
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.submit');
-
-    // Login
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.submit');
 });
 
-// ─── Authenticated (any logged-in user, verified or not) ──────────────────────
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
-Route::middleware('auth')->group(function () {
-    // Logout
-    Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+Route::middleware('demo.or.auth')->group(function () {
+    Route::view('/dashboard', 'pages.dashboard.dashboard-home')->name('dashboard');
+    Route::get('/feed', [FeedController::class, 'index'])->name('dashboard.discover');
+    Route::get('/dashboard/reviewer', [ReviewerController::class, 'index'])->name('dashboard.reviewer');
+    Route::get('/dashboard/reviewer/{subject}/download', [ReviewerController::class, 'download'])->name('dashboard.reviewer.download');
 
-    // Email verification notice (shown right after registration)
-    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])
-        ->name('verification.notice');
+    Route::get('/dashboard/tracker', [TrackerController::class, 'index'])->name('dashboard.tracker');
+    Route::post('/dashboard/tracker', [TrackerController::class, 'store'])->name('dashboard.tracker.store');
+    Route::patch('/dashboard/tracker/{application}', [TrackerController::class, 'update'])->name('dashboard.tracker.update');
+    Route::delete('/dashboard/tracker/{application}', [TrackerController::class, 'destroy'])->name('dashboard.tracker.destroy');
 
+<<<<<<< HEAD
+    Route::get('/dashboard/profile', [ProfileController::class, 'edit'])->name('dashboard.profile');
+    Route::put('/dashboard/profile', [ProfileController::class, 'update'])->name('dashboard.profile.update');
+    Route::put('/dashboard/profile/password', [ProfileController::class, 'password'])->name('dashboard.profile.password');
+=======
     // Signed verification link the user clicks from their inbox
     Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
         ->middleware('signed')
@@ -52,4 +58,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/reviewer', [ReviewerController::class, 'index'])->name('dashboard.reviewer');
     Route::get('/dashboard/reviewer/{subject}/download', [ReviewerController::class, 'download'])
         ->name('dashboard.reviewer.download');
+>>>>>>> origin/master
 });

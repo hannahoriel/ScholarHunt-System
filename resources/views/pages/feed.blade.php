@@ -162,6 +162,19 @@
 
 
 @push('scripts')
+<<<<<<< HEAD
+    @php
+        $feedData = [
+            'scholarships' => $scholarships,
+            'types' => $types,
+            'trackedScholarshipIds' => $trackedScholarshipIds,
+            'trackerStoreUrl' => route('dashboard.tracker.store'),
+            'trackerUrl' => route('dashboard.tracker'),
+        ];
+    @endphp
+    <script type="application/json" id="feed-data">@json($feedData)</script>
+=======
     <script type="application/json" id="feed-data">@json(['scholarships' => $scholarships, 'types' => $types])</script>
+>>>>>>> origin/master
     @vite('resources/js/feed.js')
 @endpush

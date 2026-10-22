@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,13 +88,11 @@ class RegisterController extends Controller
             'password'        => $data['password'],
         ]);
 
-        // Fire the Registered event — this triggers the VerifyEmail notification
-        // because User implements MustVerifyEmail.
-        event(new Registered($user));
-
-        // Log the user in immediately (unverified); they'll be shown the notice page.
+        $user->forceFill(['email_verified_at' => now()])->save();
         Auth::login($user);
 
-        return redirect()->route('verification.notice');
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard');
     }
 }
