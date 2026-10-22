@@ -162,7 +162,6 @@
 
 
 @push('scripts')
-<<<<<<< HEAD
     @php
         $feedData = [
             'scholarships' => $scholarships,
@@ -173,8 +172,5 @@
         ];
     @endphp
     <script type="application/json" id="feed-data">@json($feedData)</script>
-=======
-    <script type="application/json" id="feed-data">@json(['scholarships' => $scholarships, 'types' => $types])</script>
->>>>>>> origin/master
     @vite('resources/js/feed.js')
 @endpush

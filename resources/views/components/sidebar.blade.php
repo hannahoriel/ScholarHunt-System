@@ -20,13 +20,8 @@
     </a>
     <nav class="nav">
         @foreach ($links as $route => [$label, $icon])
-<<<<<<< HEAD
             <a href="{{ match($route) { 'dashboard' => route('dashboard'), 'reviewers' => route('dashboard.reviewer'), 'tracker' => route('dashboard.tracker'), 'profile' => route('dashboard.profile'), default => '#' } }}"
                 @if (($route === 'dashboard' && request()->routeIs('dashboard')) || ($route === 'reviewers' && request()->routeIs('dashboard.reviewer')) || ($route === 'tracker' && request()->routeIs('dashboard.tracker*')) || ($route === 'profile' && request()->routeIs('dashboard.profile*'))) aria-current="page" @elseif ($route === 'checklist') aria-disabled="true" @endif>
-=======
-            <a href="{{ $route === 'dashboard' ? route('dashboard') : ($route === 'reviewers' ? route('dashboard.reviewer') : '#') }}"
-                @if (($route === 'dashboard' && request()->routeIs('dashboard')) || ($route === 'reviewers' && request()->routeIs('dashboard.reviewer'))) aria-current="page" @elseif (! in_array($route, ['dashboard', 'reviewers'], true)) aria-disabled="true" @endif>
->>>>>>> origin/master
                 <svg viewBox="0 0 24 24" aria-hidden="true">{!! $icon !!}</svg>{{ $label }}
             </a>
         @endforeach
