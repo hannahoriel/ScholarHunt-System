@@ -25,6 +25,29 @@ class DashboardTest extends TestCase
             ->assertSee(route('dashboard.discover'), false);
     }
 
+    public function test_authenticated_pages_share_desktop_and_mobile_sidebar_controls(): void
+    {
+        $user = User::factory()->create();
+        $pages = [
+            route('dashboard'),
+            route('dashboard.discover'),
+            route('dashboard.tracker'),
+            route('dashboard.checklist'),
+            route('dashboard.reviewer'),
+            route('dashboard.profile'),
+        ];
+
+        $this->actingAs($user);
+
+        foreach ($pages as $page) {
+            $this->get($page)
+                ->assertOk()
+                ->assertSee('id="sidebar-collapse-toggle"', false)
+                ->assertSee('id="menu-btn"', false)
+                ->assertSee('aria-label="Main navigation"', false);
+        }
+    }
+
     public function test_dashboard_sidebar_displays_a_csrf_protected_logout_button(): void
     {
         $user = User::factory()->create();
@@ -32,6 +55,9 @@ class DashboardTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertOk()
+            ->assertSee('<details class="side-account" id="side-account">', false)
+            ->assertSee('class="side-account-profile" href="'.route('dashboard.profile').'"', false)
+            ->assertSee($user->first_name.' '.$user->surname)
             ->assertSee('method="POST"', false)
             ->assertSee('action="'.route('logout').'"', false)
             ->assertSee('name="_token"', false)
