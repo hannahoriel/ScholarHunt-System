@@ -193,10 +193,6 @@
         $('d-application-note').textContent = directApply
             ? 'A direct application portal is listed below. Confirm that the portal is accepting applications before entering personal information.'
             : 'A direct application URL has not been verified for this listing. We are not presenting the provider homepage as an application form; use the official program information link to locate current application instructions.';
-        $('d-data-note').textContent = s.is_sample === false
-            ? 'Confirm the current application period, eligibility, and required documents with the provider before submitting personal information.'
-            : 'Prototype/sample listing: dates, benefits, eligibility, requirements, and application availability may need verification with the provider before you apply.';
-
         syncSave();
         backdrop.classList.add('show');
         backdrop.setAttribute('aria-hidden', 'false');

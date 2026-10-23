@@ -140,7 +140,6 @@
                         <li>Submit through the provider's designated application portal and save your confirmation.</li>
                     </ul>
                 </section>
-                <div class="modal-note" id="d-data-note">Prototype listing: confirm dates, eligibility, requirements, and application availability with the scholarship provider before submitting personal information.</div>
                 <section class="application-panel">
                     <div><h3>Ready to apply?</h3><p id="d-application-note">Use the scholarship's application portal when a verified direct link is available. If not, check the provider's official program page for current instructions.</p></div>
                     <div class="application-actions">
