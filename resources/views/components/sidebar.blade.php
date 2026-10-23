@@ -33,16 +33,25 @@
         @endforeach
     </nav>
     <div class="sidebar-footer">
-        <div class="side-user" title="{{ $displayName }}">
-            <span class="avatar">{{ $initials ?: 'SH' }}</span>
-            <div class="side-user-copy"><strong>{{ $displayName }}</strong><small>Student</small></div>
-        </div>
-        <form class="sidebar-logout" method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" aria-label="Log out" title="Log out">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
-                <span class="logout-label">Log out</span>
-            </button>
-        </form>
+        <details class="side-account" id="side-account">
+            <summary class="side-user" title="{{ $displayName }}" aria-label="Account menu for {{ $displayName ?: 'student' }}">
+                <span class="avatar">{{ $initials ?: 'SH' }}</span>
+                <div class="side-user-copy"><strong>{{ $displayName }}</strong><small>Student</small></div>
+                <svg class="account-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+            </summary>
+            <div class="side-account-menu">
+                <a class="side-account-profile" href="{{ route('dashboard.profile') }}">
+                    <strong>{{ $displayName }}</strong>
+                    <small>{{ auth()->user()->email }}</small>
+                </a>
+                <form class="sidebar-logout" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" aria-label="Log out" title="Log out">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
+                        <span class="logout-label">Log out</span>
+                    </button>
+                </form>
+            </div>
+        </details>
     </div>
 </aside>
