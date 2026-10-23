@@ -102,17 +102,17 @@
             <p>Browse scholarship opportunities, compare eligibility, and check application deadlines.</p>
             <span class="quick-link">Explore listings <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="quick-card" href="#" aria-disabled="true">
+        <a class="quick-card" href="{{ route('dashboard.tracker') }}">
             <span class="quick-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 9h8M8 13h5M8 17h3"/></svg></span>
             <h3>Application tracker</h3>
             <p>Keep an eye on scholarships you are preparing for and the next steps you need to take.</p>
-            <span class="quick-link">Coming soon <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="quick-link">Open tracker <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="quick-card" href="#" aria-disabled="true">
+        <a class="quick-card" href="{{ route('dashboard.reviewer') }}">
             <span class="quick-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5V5.5Z"/><path d="M12 6v13.5"/></svg></span>
             <h3>Find reviewers</h3>
             <p>Explore study support and reviewers to help you prepare for your academic goals.</p>
-            <span class="quick-link">Coming soon <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="quick-link">Browse reviewers <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
     </section>
 
