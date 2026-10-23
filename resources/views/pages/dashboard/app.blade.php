@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">\n    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#131A28">
     <title>@yield('title', 'Feed') — ScholarHunt</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">

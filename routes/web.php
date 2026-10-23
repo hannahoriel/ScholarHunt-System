@@ -34,3 +34,7 @@ Route::middleware('demo.or.auth')->group(function () {
     Route::put('/dashboard/profile', [ProfileController::class, 'update'])->name('dashboard.profile.update');
     Route::put('/dashboard/profile/password', [ProfileController::class, 'password'])->name('dashboard.profile.password');
 });
+
+Route::get('/dashboard/checklist', function () {
+    return view('pages.dashboard.checklist');
+})->name('dashboard.checklist');

@@ -20,8 +20,8 @@
     </a>
     <nav class="nav">
         @foreach ($links as $route => [$label, $icon])
-            <a href="{{ match($route) { 'dashboard' => route('dashboard'), 'reviewers' => route('dashboard.reviewer'), 'tracker' => route('dashboard.tracker'), 'profile' => route('dashboard.profile'), default => '#' } }}"
-                @if (($route === 'dashboard' && request()->routeIs('dashboard')) || ($route === 'reviewers' && request()->routeIs('dashboard.reviewer')) || ($route === 'tracker' && request()->routeIs('dashboard.tracker*')) || ($route === 'profile' && request()->routeIs('dashboard.profile*'))) aria-current="page" @elseif ($route === 'checklist') aria-disabled="true" @endif>
+            <a href="{{ match($route) { 'dashboard' => route('dashboard'), 'reviewers' => route('dashboard.reviewer'), 'tracker' => route('dashboard.tracker'), 'checklist' => route('dashboard.checklist'), 'profile' => route('dashboard.profile'), default => '#' } }}"
+                @if (($route === 'dashboard' && request()->routeIs('dashboard')) || ($route === 'reviewers' && request()->routeIs('dashboard.reviewer')) || ($route === 'tracker' && request()->routeIs('dashboard.tracker*')) || ($route === 'checklist' && request()->routeIs('dashboard.checklist')) || ($route === 'profile' && request()->routeIs('dashboard.profile*'))) aria-current="page" @endif>
                 <svg viewBox="0 0 24 24" aria-hidden="true">{!! $icon !!}</svg>{{ $label }}
             </a>
         @endforeach
