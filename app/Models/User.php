@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -11,6 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'is_admin',
         'first_name',
         'middle_name',
         'surname',
@@ -45,7 +47,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'birthday' => 'date',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    /** Whether this user has admin privileges. */
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
     }
 
     public static function demoAccount(): self
@@ -82,5 +91,10 @@ class User extends Authenticatable
             $this->middle_name,
             $this->surname,
         ])));
+    }
+
+    public function scholarshipApplications(): HasMany
+    {
+        return $this->hasMany(ScholarshipApplication::class);
     }
 }

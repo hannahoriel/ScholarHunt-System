@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminScholarshipController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FeedController;
@@ -20,7 +23,14 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
 Route::middleware('demo.or.auth')->group(function () {
-    Route::view('/dashboard', 'pages.dashboard.dashboard-home')->name('dashboard');
+    Route::get('/dashboard', function () {
+        // Redirect admins to their own panel; students see the student home.
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return view('pages.dashboard.dashboard-home');
+    })->name('dashboard');
     Route::get('/feed', [FeedController::class, 'index'])->name('dashboard.discover');
     Route::get('/dashboard/reviewer', [ReviewerController::class, 'index'])->name('dashboard.reviewer');
     Route::get('/dashboard/reviewer/{subject}/download', [ReviewerController::class, 'download'])->name('dashboard.reviewer.download');
@@ -38,3 +48,24 @@ Route::middleware('demo.or.auth')->group(function () {
 Route::get('/dashboard/checklist', function () {
     return view('pages.dashboard.checklist');
 })->name('dashboard.checklist');
+
+// ---------------------------------------------------------------------------
+// Admin routes
+// ---------------------------------------------------------------------------
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Scholarships
+    Route::get('/scholarships', [AdminScholarshipController::class, 'index'])->name('scholarships.index');
+    Route::get('/scholarships/create', [AdminScholarshipController::class, 'create'])->name('scholarships.create');
+    Route::post('/scholarships', [AdminScholarshipController::class, 'store'])->name('scholarships.store');
+    Route::get('/scholarships/{scholarship}/edit', [AdminScholarshipController::class, 'edit'])->name('scholarships.edit');
+    Route::put('/scholarships/{scholarship}', [AdminScholarshipController::class, 'update'])->name('scholarships.update');
+    Route::delete('/scholarships/{scholarship}', [AdminScholarshipController::class, 'destroy'])->name('scholarships.destroy');
+    Route::patch('/scholarships/{scholarship}/toggle-publish', [AdminScholarshipController::class, 'togglePublish'])->name('scholarships.toggle-publish');
+
+    // Users
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+});
