@@ -53,6 +53,24 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## CI/CD and Docker
+
+The GitHub Actions workflow at `.github/workflows/ci-cd.yml` runs PHP formatting checks, Laravel tests, and the Vite production build for pull requests and pushes to `main`. After those checks pass, pushes to `main` and version tags beginning with `v` build and publish a Docker image to GitHub Container Registry (GHCR). Pull requests and manually triggered runs do not publish images.
+
+To build the image locally:
+
+```bash
+docker build -t scholarhunt-system .
+```
+
+Create and configure `.env` first, including a generated `APP_KEY` and production database settings. Pass those values at runtime; do not put `.env` or `APP_KEY` in the image:
+
+```bash
+docker run --rm -p 8080:80 --env-file .env scholarhunt-system
+```
+
+The container serves Laravel with Apache on port 80. Configure a production database and persistent storage for the deployment environment. Publishing to GHCR makes the image available but does not deploy or start it on a hosting provider.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

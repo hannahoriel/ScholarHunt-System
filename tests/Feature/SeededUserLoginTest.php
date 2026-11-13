@@ -16,15 +16,19 @@ class SeededUserLoginTest extends TestCase
         $this->seed(DatabaseSeeder::class);
         $this->seed(DatabaseSeeder::class);
 
-        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('users', 2);
         $this->assertDatabaseHas('users', [
-            'email' => 'test@example.com',
-            'first_name' => 'Test',
+            'email' => 'admin@scholarhunt.test',
+            'first_name' => 'Scholar',
+        ]);
+        $this->assertDatabaseHas('users', [
+            'email' => 'annadelacruz@gmail.com',
+            'first_name' => 'Anna',
         ]);
 
         $this->post(route('login.submit'), [
-            'email' => 'test@example.com',
-            'password' => 'password',
+            'email' => 'annadelacruz@gmail.com',
+            'password' => 'Demo1234',
         ])->assertRedirectToRoute('dashboard');
     }
 
@@ -40,7 +44,7 @@ class SeededUserLoginTest extends TestCase
         }
 
         $this->assertDatabaseMissing('users', [
-            'email' => 'test@example.com',
+            'email' => 'annadelacruz@gmail.com',
         ]);
     }
 }

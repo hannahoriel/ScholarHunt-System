@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
     public function edit(): View
     {
-        abort_unless(auth()->user() instanceof \App\Models\User, 403, 'Profile settings require a registered account.');
+        abort_unless(auth()->user() instanceof User, 403, 'Profile settings require a registered account.');
+
         return view('pages.profile');
     }
 
     public function update(Request $request): RedirectResponse
     {
         $user = $request->user();
-        abort_unless($user instanceof \App\Models\User, 403, 'Profile settings require a registered account.');
+        abort_unless($user instanceof User, 403, 'Profile settings require a registered account.');
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:80'],
             'middle_name' => ['nullable', 'string', 'max:80'],
@@ -45,7 +48,7 @@ class ProfileController extends Controller
         if ($data['email'] !== $user->email) {
             $data['email_verified_at'] = null;
         }
-        $birthday = \Illuminate\Support\Carbon::parse($data['birthday']);
+        $birthday = Carbon::parse($data['birthday']);
         $data['age'] = $birthday->age;
         if ($data['education_level'] === 'shs') {
             $data['college_year'] = $data['college_course'] = null;
@@ -53,17 +56,19 @@ class ProfileController extends Controller
             $data['shs_grade'] = $data['shs_strand'] = null;
         }
         $user->update($data);
+
         return back()->with('status', 'Your profile has been updated.');
     }
 
     public function password(Request $request): RedirectResponse
     {
-        abort_unless($request->user() instanceof \App\Models\User, 403, 'Password settings require a registered account.');
+        abort_unless($request->user() instanceof User, 403, 'Password settings require a registered account.');
         $data = $request->validate([
             'current_password' => ['required', 'current_password'],
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
         $request->user()->update(['password' => Hash::make($data['password'])]);
+
         return back()->with('status', 'Password changed successfully.');
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Support\MockExamData;
+use Database\Seeders\AdminSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -77,6 +78,7 @@ class DashboardTest extends TestCase
 
     public function test_discover_route_displays_scholarship_feed_and_type_filters(): void
     {
+        $this->seed(AdminSeeder::class);
         $user = User::factory()->create();
 
         $this->actingAs($user)
